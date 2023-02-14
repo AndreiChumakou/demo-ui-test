@@ -41,7 +41,18 @@ public class AmazonTest {
                 .findElement(By.xpath(AmazonPage.ROW_YOUR_AMAZON_CART_IS_EMPTY_XPATH)).getText();
     }
 
+    @Test
+    public void testOpenAmazonLoginForm() {
+        driver.get(AmazonPage.URL);
+        driver.findElement(By.xpath(AmazonPage.CART_FROM_MAIN_XPATH)).click();
+        driver.findElement(By.xpath(AmazonPage.BUTTON_SIGN_TO_ACCOUNT_XPATH)).click();
 
+        new WebDriverWait(driver, Duration.ofMillis(3000)).until(ExpectedConditions
+                .presenceOfElementLocated(By.xpath(AmazonPage.SING_IN_XPATH)));
+
+        String actualTextSingIn = driver.findElement(By.xpath(AmazonPage.SING_IN_XPATH)).getText();
+        Assert.assertEquals(AmazonPage.SING_IN_TEXT, actualTextSingIn);
+    }
 
     @After
     public void endTest() {
