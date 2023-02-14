@@ -10,7 +10,11 @@ public class AmazonPage {
             "//div[@class='a-row sc-your-amazon-cart-is-empty']";
     public static final String ROW_YOUR_AMAZON_CART_IS_EMPTY_TEXT = "Your Amazon Cart is empty";
 
+    public static final String BUTTON_SIGN_TO_ACCOUNT_XPATH =
+            "//span[contains(text(),'Sign in to your account')]";
 
+    public static final String SING_IN_XPATH = "//h1[contains(text(),'Sign in')]";
+    public static final String SING_IN_TEXT = "Sign in";
 
 
 
