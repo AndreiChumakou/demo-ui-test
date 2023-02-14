@@ -1,6 +1,7 @@
 package by.itacademy.andreichumakou.web;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,12 +13,16 @@ import java.time.Duration;
 
 
 public class OnlinerTest {
+    WebDriver driver;
+
+    @Before
+    public void initObject() {
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+    }
 
     @Test
     public void testOpenOnliner() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
         driver.get(OnlinerMainPage.URL);
         String actualCopyright = driver.findElement(By.xpath(OnlinerMainPage.COPYRIGHT_XPATH)).getText();
 
@@ -27,9 +32,6 @@ public class OnlinerTest {
 
     @Test
     public void testOpenOnlinerLoginForm() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
         driver.get(OnlinerMainPage.URL);
         driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
 
@@ -41,9 +43,6 @@ public class OnlinerTest {
 
     @Test
     public void testOnlinerLoginFormWithEmptyCredentials() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
         driver.get(OnlinerMainPage.URL);
         driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
         driver.findElement(By.xpath(OnlinerEnterPage.BUTTON_ENTER_XPATH)).click();
@@ -63,9 +62,6 @@ public class OnlinerTest {
 
     @Test
     public void testOnlinerLoginFormWithEmptyPassword() {
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
         driver.get(OnlinerMainPage.URL);
         driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
 
@@ -81,7 +77,5 @@ public class OnlinerTest {
                 .ERROR_MSG_AUTH_FORM_PASSWORD_XPATH)).getText();
         Assert.assertEquals(OnlinerEnterPage.ERROR_MSG_AUTH_FORM_PASSWORD_TEXT, actualMessageErrorPassword);
         driver.quit();
-
     }
-
 }
