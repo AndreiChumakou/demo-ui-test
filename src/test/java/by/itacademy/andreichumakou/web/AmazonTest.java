@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class AmazonTest {
 
@@ -26,6 +30,18 @@ public class AmazonTest {
         System.out.println(actualCopyrightText);
         Assert.assertEquals(AmazonPage.COPYRIGHT_TEXT, actualCopyrightText);
     }
+
+    @Test
+    public void testOpenAmazonCart() {
+        driver.get(AmazonPage.URL);
+        driver.findElement(By.xpath(AmazonPage.CART_FROM_MAIN_XPATH)).click();
+        new WebDriverWait(driver, Duration.ofMillis(3000)).until(ExpectedConditions
+                .presenceOfElementLocated(By.xpath(AmazonPage.ROW_YOUR_AMAZON_CART_IS_EMPTY_XPATH)));
+        String actualTextIsCartEmpty = driver
+                .findElement(By.xpath(AmazonPage.ROW_YOUR_AMAZON_CART_IS_EMPTY_XPATH)).getText();
+    }
+
+
 
     @After
     public void endTest() {
