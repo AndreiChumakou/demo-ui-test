@@ -8,6 +8,8 @@ public class OnlinerEnterPage {
     public static final String ERROR_MSG_AUTH_FORM_NAME_TEXT = "Укажите ник или e-mail";
     public static final String ERROR_MSG_AUTH_FORM_PASSWORD_XPATH = "//div[contains(text(), 'Укажите пароль')]";
     public static final String ERROR_MSG_AUTH_FORM_PASSWORD_TEXT = "Укажите пароль";
+    public static final String NAME_FIELD_XPATH = "//input[@placeholder='Ник или e-mail']";
+    public static final String CREDENTIALS_EMAIL = "test@dom.ru";
 
 
 

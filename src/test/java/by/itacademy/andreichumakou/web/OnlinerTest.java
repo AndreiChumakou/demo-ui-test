@@ -40,7 +40,7 @@ public class OnlinerTest {
     }
 
     @Test
-    public void testOnlinerLoginFormWithEmptyPassword() {
+    public void testOnlinerLoginFormWithEmptyCredentials() {
         WebDriver driver = new ChromeDriver();
         driver.manage().window().maximize();
 
@@ -61,5 +61,27 @@ public class OnlinerTest {
         driver.quit();
     }
 
+    @Test
+    public void testOnlinerLoginFormWithEmptyPassword() {
+        WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+
+        driver.get(OnlinerMainPage.URL);
+        driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
+
+        driver.findElement(By.xpath(OnlinerEnterPage.NAME_FIELD_XPATH))
+                .sendKeys(OnlinerEnterPage.CREDENTIALS_EMAIL);
+
+        driver.findElement(By.xpath(OnlinerEnterPage.BUTTON_ENTER_XPATH)).click();
+
+        new WebDriverWait(driver, Duration.ofMillis(5000)).until(ExpectedConditions
+                .presenceOfElementLocated(By.xpath(OnlinerEnterPage
+                        .ERROR_MSG_AUTH_FORM_PASSWORD_XPATH)));
+        String actualMessageErrorPassword = driver.findElement(By.xpath(OnlinerEnterPage
+                .ERROR_MSG_AUTH_FORM_PASSWORD_XPATH)).getText();
+        Assert.assertEquals(OnlinerEnterPage.ERROR_MSG_AUTH_FORM_PASSWORD_TEXT, actualMessageErrorPassword);
+        driver.quit();
+
+    }
 
 }
