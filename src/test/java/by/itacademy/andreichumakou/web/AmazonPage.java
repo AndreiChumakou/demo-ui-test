@@ -16,6 +16,12 @@ public class AmazonPage {
     public static final String SING_IN_XPATH = "//h1[contains(text(),'Sign in')]";
     public static final String SING_IN_TEXT = "Sign in";
 
+    public static final String BUTTON_CONTINUE_SIGN_IN_XPATH
+            = "//span[@id='continue']";
+    public static final String ALERT_MISSING_EMAIL_TEXT = "Enter your email or mobile phone number";
+
+
+
 
 
 
