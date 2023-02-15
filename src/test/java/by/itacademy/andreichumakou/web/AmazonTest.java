@@ -54,6 +54,17 @@ public class AmazonTest {
         Assert.assertEquals(AmazonPage.SING_IN_TEXT, actualTextSingIn);
     }
 
+    @Test
+    public void testAmazonLoginFormWithEmptyCredentials() {
+        driver.get(AmazonPage.URL);
+        driver.findElement(By.xpath(AmazonPage.CART_FROM_MAIN_XPATH)).click();
+        driver.findElement(By.xpath(AmazonPage.BUTTON_SIGN_TO_ACCOUNT_XPATH)).click();
+        driver.findElement(By.xpath(AmazonPage.BUTTON_CONTINUE_SIGN_IN_XPATH)).click();
+        String actualAlertMissingEmail = driver.findElement(By.xpath("//*[@id=\"auth-email-missing-alert\"]")).getText();
+        Assert.assertEquals(AmazonPage.ALERT_MISSING_EMAIL_TEXT, actualAlertMissingEmail);
+    }
+
+
     @After
     public void endTest() {
         driver.quit();
