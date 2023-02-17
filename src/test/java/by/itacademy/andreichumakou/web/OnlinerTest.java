@@ -102,9 +102,9 @@ public class OnlinerTest {
         TimeToWait.waitForPresenceOfElement(driver, OnlinerMainPage.PROFILE_NAME_XPATH);
         TimeToWait.waitForVisualisation(3000);
         String actualNameAfterLogin = driver.findElement(By.xpath(OnlinerMainPage.PROFILE_NAME_XPATH)).getText();
+        Assert.assertEquals(OnlinerMainPage.CREDENTIALS_NIKNAME_REAL, actualNameAfterLogin);
         TimeToWait.waitForVisualisation(3000);
     }
-
 
     @After()
     public void closeDriver() {
