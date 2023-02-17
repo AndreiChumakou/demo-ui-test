@@ -9,7 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import java.awt.*;
+import static java.awt.event.InputEvent.*;
 import java.time.Duration;
 
 
@@ -25,8 +26,7 @@ public class OnlinerTest {
 
     @Test
     public void testOpenOnliner() {
-        new WebDriverWait(driver, Duration.ofMillis(5000)).until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath(OnlinerMainPage.COPYRIGHT_XPATH)));
+        TimeToWait.waitForPresenceOfElement(driver,OnlinerMainPage.COPYRIGHT_XPATH);
         String actualCopyright = driver.findElement(By.xpath(OnlinerMainPage.COPYRIGHT_XPATH)).getText();
         Assert.assertEquals(OnlinerMainPage.COPYRIGHT_TEXT, actualCopyright);
     }
@@ -43,9 +43,8 @@ public class OnlinerTest {
     public void testOnlinerLoginFormWithEmptyCredentials() {
         driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
         driver.findElement(By.xpath(OnlinerEnterPage.BUTTON_ENTER_XPATH)).click();
-        new WebDriverWait(driver, Duration.ofMillis(10000)).until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath(OnlinerEnterPage
-                        .ERROR_MSG_AUTH_FORM_NAME_XPATH)));
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerEnterPage
+                .ERROR_MSG_AUTH_FORM_NAME_XPATH);
         String actualMessageErrorName = driver.findElement(By.xpath(OnlinerEnterPage
                 .ERROR_MSG_AUTH_FORM_NAME_XPATH)).getText();
         String actualMessageErrorPassword = driver.findElement(By.xpath(OnlinerEnterPage
@@ -56,12 +55,12 @@ public class OnlinerTest {
 
     @Test
     public void testOnlinerLoginFormWithEmptyPassword() {
-        waitForPresenceOfElement(OnlinerMainPage.ENTER_XPATH);
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerMainPage.ENTER_XPATH);
         driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
         driver.findElement(By.xpath(OnlinerEnterPage.NAME_FIELD_XPATH))
                 .sendKeys(OnlinerEnterPage.CREDENTIALS_EMAIL);
         driver.findElement(By.xpath(OnlinerEnterPage.BUTTON_ENTER_XPATH)).click();
-        waitForPresenceOfElement(OnlinerEnterPage.ERROR_MSG_AUTH_FORM_PASSWORD_XPATH);
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerEnterPage.ERROR_MSG_AUTH_FORM_PASSWORD_XPATH);
         String actualMessageErrorPassword = driver.findElement(By.xpath(OnlinerEnterPage
                 .ERROR_MSG_AUTH_FORM_PASSWORD_XPATH)).getText();
         Assert.assertEquals(OnlinerEnterPage.ERROR_MSG_AUTH_FORM_PASSWORD_TEXT, actualMessageErrorPassword);
@@ -69,25 +68,46 @@ public class OnlinerTest {
 
     @Test
     public void testOnlinerLoginFormWithEmptyNameOfUser() {
-        waitForPresenceOfElement(OnlinerMainPage.ENTER_XPATH);
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerMainPage.ENTER_XPATH);
         driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
         driver.findElement(By.xpath(OnlinerEnterPage.PASSWORD_FIELD_XPATH))
                 .sendKeys(OnlinerEnterPage.CREDENTIALS_PASSWORD);
         driver.findElement(By.xpath(OnlinerEnterPage.BUTTON_ENTER_XPATH)).click();
-        waitForPresenceOfElement(OnlinerEnterPage.ERROR_MSG_AUTH_FORM_NAME_XPATH);
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerEnterPage.ERROR_MSG_AUTH_FORM_NAME_XPATH);
         String actualMessageErrorName = driver.findElement(By.xpath(OnlinerEnterPage
                 .ERROR_MSG_AUTH_FORM_NAME_XPATH)).getText();
         Assert.assertEquals(OnlinerEnterPage.ERROR_MSG_AUTH_FORM_NAME_TEXT, actualMessageErrorName);
+    }
+
+    @Test
+    public void testOnlinerLoginFormWithRealCredentials() throws AWTException {
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerMainPage.ENTER_XPATH);
+        driver.findElement(By.xpath(OnlinerMainPage.ENTER_XPATH)).click();
+        driver.findElement(By.xpath(OnlinerEnterPage.NAME_FIELD_XPATH))
+                .sendKeys(OnlinerMainPage.CREDENTIALS_EMAIL_REAL);
+        driver.findElement(By.xpath(OnlinerEnterPage.PASSWORD_FIELD_XPATH))
+                .sendKeys(OnlinerMainPage.CREDENTIALS_PASSWORD_REAL);
+        TimeToWait.waitForVisualisation(3000);
+        driver.findElement(By.xpath(OnlinerEnterPage.BUTTON_ENTER_XPATH)).click();
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions
+                .frameToBeAvailableAndSwitchToIt(By.xpath("//iframe[starts-with(@name, 'a-')]")));
+        Robot robot = new Robot();
+        robot.mouseMove(638, 490);
+        TimeToWait.waitForVisualisation(3000);
+        robot.mousePress(BUTTON1_DOWN_MASK);
+        robot.mouseRelease(BUTTON1_DOWN_MASK);
+        TimeToWait.waitForVisualisation(60000);
+
+        driver.findElement(By.xpath(OnlinerMainPage.BUTTON_PROFILE_XPATH)).click();
+        TimeToWait.waitForPresenceOfElement(driver, OnlinerMainPage.PROFILE_NAME_XPATH);
+        TimeToWait.waitForVisualisation(3000);
+        String actualNameAfterLogin = driver.findElement(By.xpath(OnlinerMainPage.PROFILE_NAME_XPATH)).getText();
+        TimeToWait.waitForVisualisation(3000);
     }
 
 
     @After()
     public void closeDriver() {
         driver.quit();
-    }
-
-    public void waitForPresenceOfElement(String xPathOfElement) {
-        new WebDriverWait(driver, Duration.ofMillis(5000)).until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath(xPathOfElement)));
     }
 }
