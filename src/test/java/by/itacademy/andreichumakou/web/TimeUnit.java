@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class TimeToWait {
+public class TimeUnit {
 
     public static void waitForVisualisation(int millis) {
         try {
